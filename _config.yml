@@ -23,7 +23,7 @@ repository               : "Kathleen-Medriano/Kathleen-Medriano.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profileBig.jpg"
   name             : "Kathleen Medriano"
   pronouns         : # example: "she/her"
   bio              : "PhD in Cognitive Sciences, MS Statistics. Time Series Analysis, Machine Learning, and Statistical Modeling."
