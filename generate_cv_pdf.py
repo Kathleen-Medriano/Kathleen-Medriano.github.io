@@ -78,6 +78,16 @@ def create_styles():
     ))
     
     styles.add(ParagraphStyle(
+        name='CVSubsectionHeader',
+        parent=styles['Normal'],
+        fontSize=12,
+        spaceBefore=12,
+        spaceAfter=4,
+        textColor=darkblue,
+        fontName='Helvetica-Bold'
+    ))
+    
+    styles.add(ParagraphStyle(
         name='CVEntryTitle',
         parent=styles['Normal'],
         fontSize=12,
@@ -290,24 +300,68 @@ def generate_pdf(cv_data, output_path):
         story.append(Spacer(1, 12))
     
     # Publications
-    publications = cv_data.get('publications', [])
+    publications = cv_data.get('publications', {})
     if publications:
         story.append(Paragraph('Publications', styles['CVSectionHeader']))
-        for pub in publications:
-            if pub.get('name'):
-                story.append(Paragraph(pub['name'], styles['CVEntryTitle']))
+        
+        # Manuscripts in preparation / under review
+        manuscripts = publications.get('manuscripts_in_prep', [])
+        if manuscripts:
+            story.append(Paragraph('Manuscripts in Preparation / Under Review', styles['CVSubsectionHeader']))
+            for manuscript in manuscripts:
+                if manuscript.get('title'):
+                    story.append(Paragraph(manuscript['title'], styles['CVEntryTitle']))
+                
+                authors = manuscript.get('authors', [])
+                if authors:
+                    authors_text = ', '.join(authors)
+                    story.append(Paragraph(authors_text, styles['CVEntryOrg']))
+                
+                status_info = []
+                if manuscript.get('status'):
+                    status_info.append(manuscript['status'])
+                if manuscript.get('expected_submission'):
+                    status_info.append(f"Expected submission: {manuscript['expected_submission']}")
+                
+                if status_info:
+                    story.append(Paragraph(', '.join(status_info), styles['CVEntryDate']))
+                
+                if manuscript.get('description'):
+                    story.append(Paragraph(manuscript['description'], styles['CVEntryDesc']))
             
-            pub_info = []
-            if pub.get('publisher'):
-                pub_info.append(pub['publisher'])
-            if pub.get('releaseDate'):
-                pub_info.append(pub['releaseDate'])
-            
-            if pub_info:
-                story.append(Paragraph(', '.join(pub_info), styles['CVEntryOrg']))
-            
-            if pub.get('summary'):
-                story.append(Paragraph(pub['summary'], styles['CVEntryDesc']))
+            story.append(Spacer(1, 6))
+        
+        # Peer-reviewed publications
+        peer_reviewed = publications.get('peer_reviewed', [])
+        if peer_reviewed:
+            story.append(Paragraph('Peer-Reviewed Journal Articles', styles['CVSubsectionHeader']))
+            for pub in reversed(peer_reviewed):  # Most recent first
+                if pub.get('title'):
+                    story.append(Paragraph(pub['title'], styles['CVEntryTitle']))
+                
+                authors = pub.get('authors', [])
+                if authors:
+                    authors_text = ', '.join(authors)
+                    story.append(Paragraph(authors_text, styles['CVEntryOrg']))
+                
+                pub_info = []
+                if pub.get('journal'):
+                    journal_text = pub['journal']
+                    if pub.get('volume'):
+                        journal_text += f", {pub['volume']}"
+                    if pub.get('issue'):
+                        journal_text += f"({pub['issue']})"
+                    if pub.get('pages'):
+                        journal_text += f": {pub['pages']}"
+                    if pub.get('year'):
+                        journal_text += f" ({pub['year']})"
+                    pub_info.append(journal_text)
+                
+                if pub_info:
+                    story.append(Paragraph(', '.join(pub_info), styles['CVEntryDate']))
+                
+                if pub.get('description'):
+                    story.append(Paragraph(pub['description'], styles['CVEntryDesc']))
         
         story.append(Spacer(1, 12))
     
