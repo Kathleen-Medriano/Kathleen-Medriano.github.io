@@ -1,152 +1,338 @@
 {
   "basics": {
-    "name": "Your Sidebar Name",
-    "email": "none@example.org",
+    "name": "Kathleen Medriano",
+    "email": "kmedrian@uci.edu",
     "phone": "",
-    "website": "https://academicpages.github.io",
-    "summary": "Currently employed at Red Brick University. Short biography for the left-hand sidebar",
+    "website": "https://Kathleen-Medriano.github.io",
+    "summary": "PhD Student in Cognitive Sciences at University of California, Irvine. Specializing in the intersection of cognitive science, statistics, machine learning, and computational modeling with expertise in time series analysis, Bayesian methods, and statistical modeling.",
     "location": {
       "address": "",
       "postalCode": "",
-      "city": "Earth",
+      "city": "Irvine",
       "countryCode": "US",
-      "region": ""
+      "region": "CA"
     },
     "profiles": [
       {
         "network": "Google Scholar",
         "username": "",
-        "url": "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
+        "url": "https://scholar.google.com/citations?user=6WX16d8AAAAJ"
       },
       {
         "network": "ORCID",
         "username": "",
-        "url": "http://orcid.org/yourorcidurl"
+        "url": "https://orcid.org/0000-0001-6562-439X"
       },
       {
         "network": "GitHub",
-        "username": "academicpages",
-        "url": "https://github.com/academicpages"
+        "username": "Kathleen-Medriano",
+        "url": "https://github.com/Kathleen-Medriano"
       }
     ]
   },
-  "work": [],
   "education": [
     {
-      "institution": "GitHub University",
-      "area": "Ph.D in Version Control Theory",
-      "studyType": "",
-      "startDate": "",
-      "endDate": "2018",
+      "institution": "University of California, Irvine",
+      "area": "Cognitive Sciences",
+      "studyType": "PhD",
+      "startDate": "September 2022",
+      "endDate": "Present",
       "gpa": null,
-      "courses": []
+      "courses": [],
+      "description": "Dissertation methods for time series data in the cognitive sciences."
     },
     {
-      "institution": "GitHub University",
-      "area": "M.S. in Jekyll",
-      "studyType": "",
-      "startDate": "",
-      "endDate": "2014",
+      "institution": "University of California, Irvine",
+      "area": "Statistics",
+      "studyType": "Master of Science",
+      "startDate": "September 2022",
+      "endDate": "December 2024",
       "gpa": null,
-      "courses": []
+      "courses": [],
+      "description": "Developed advanced skills in statistical inference, modeling, and data analysis with focus on Bayesian methods and time series analysis."
     },
     {
-      "institution": "GitHub University",
-      "area": "B.S. in GitHub",
-      "studyType": "",
-      "startDate": "",
-      "endDate": "2012",
+      "institution": "University of the Philippines, Diliman",
+      "area": "Mathematics",
+      "studyType": "Graduate Diploma",
+      "startDate": "August 2017",
+      "endDate": "July 2019",
       "gpa": null,
-      "courses": []
+      "courses": [],
+      "description": "Built expertise in formal mathematical reasoning and proof techniques."
+    },
+    {
+      "institution": "University of Santo Tomas",
+      "area": "Psychology",
+      "studyType": "Bachelor of Science",
+      "startDate": "June 2012",
+      "endDate": "June 2016",
+      "gpa": null,
+      "courses": [],
+      "description": "Foundational knowledge of human cognition and behavior."
     }
   ],
-  "skills": [],
-  "languages": [],
-  "interests": [],
-  "references": [],
-  "publications": [
+  "research_experience": [
     {
-      "name": "Paper Title Number 1",
-      "publisher": "Journal 1",
-      "releaseDate": "2009-10-01",
-      "website": "http://academicpages.github.io/files/paper1.pdf",
-      "summary": "This paper is about the number 1. The number 2 is left for future work."
+      "position": "PhD Research Student",
+      "institution": "University of California, Irvine - Cognitive Sciences Department",
+      "supervisor": "Joachim Vandekerckhove",
+      "startDate": "September 2022",
+      "endDate": "Present",
+      "description": "Developing Bayesian hierarchical models for intervention designs in mobile health applications. Creating statistical tests for diffusion processes and data-driven algorithms for model discovery in cognitive science."
     },
     {
-      "name": "Paper Title Number 2",
-      "publisher": "Journal 1",
-      "releaseDate": "2010-10-01",
-      "website": "http://academicpages.github.io/files/paper2.pdf",
-      "summary": "This paper is about the number 2. The number 3 is left for future work."
-    },
-    {
-      "name": "Paper Title Number 3",
-      "publisher": "Journal 1",
-      "releaseDate": "2015-10-01",
-      "website": "http://academicpages.github.io/files/paper3.pdf",
-      "summary": "This paper is about the number 3. The number 4 is left for future work."
-    },
-    {
-      "name": "Paper Title Number 4",
-      "publisher": "GitHub Journal of Bugs",
-      "releaseDate": "2024-02-17",
-      "website": "http://academicpages.github.io/files/paper3.pdf",
-      "summary": "This paper is about fixing template issue #693."
+      "position": "Research Intern (CacTüS Program)",
+      "institution": "Max Planck Institute for Biological Cybernetics",
+      "supervisor": "Peter Dayan, Philip Schwartenbeck, Mihaly Banyai",
+      "startDate": "July 2022",
+      "endDate": "September 2022",
+      "description": "Selected for the highly competitive CacTüS Internship program (acceptance rate: < 2%). Conducted research on generalization of learned structural knowledge across cognitive tasks using graph similarity in Dr. Peter Dayan's lab in Tübingen, Germany."
     }
   ],
-  "presentations": [
+  "publications": {
+    "manuscripts_in_prep": [
+      {
+        "title": "Bayesian Ornstein-Uhlenbeck Models for Mobile Health Intervention Design",
+        "authors": ["Kathleen Medriano", "Joachim Vandekerckhove"],
+        "status": "In preparation",
+        "expected_submission": "2025",
+        "description": "Developing Bayesian hierarchical Ornstein-Uhlenbeck models for optimizing intervention timing and effectiveness in mobile health applications."
+      },
+      {
+        "title": "Statistical Tests for Diffusion Process Sufficiency in Time Series Modeling",
+        "authors": ["Kathleen Medriano", "Joachim Vandekerckhove"],
+        "status": "Under review",
+        "expected_submission": "2024",
+        "description": "Novel statistical framework for assessing whether diffusion processes adequately capture temporal dynamics in time series data."
+      }
+    ],
+    "peer_reviewed": [
+      {
+        "title": "The HDI+ ROPE decision rule is logically incoherent but we can fix it",
+        "authors": ["Alexander Etz", "Andrés F. Chávez de la Peña", "Luis Baroja", "Kathleen Medriano", "Joachim Vandekerckhove"],
+        "journal": "Psychological Methods",
+        "year": "2024",
+        "volume": "",
+        "issue": "",
+        "pages": "",
+        "doi": "",
+        "url": "",
+        "citation": "Etz, A., Chávez de la Peña, A. F., Baroja, L., Medriano, K., & Vandekerckhove, J. (2024). The HDI+ ROPE decision rule is logically incoherent but we can fix it. Psychological Methods.",
+        "description": "Critical analysis and proposed solution for a commonly used Bayesian decision rule in psychological research."
+      },
+      {
+        "title": "Experiences of COVID-19-recovered healthcare workers in a tertiary hospital in the Philippines: a mixed-method inquiry",
+        "authors": ["MB Carascal", "PE Capistrano", "MDL Figueras", "OLAC Cataylo", "SMS Zuñiga", "K Medriano"],
+        "journal": "INQUIRY: The Journal of Health Care Organization, Provision, and Financing",
+        "year": "2022",
+        "volume": "",
+        "issue": "",
+        "pages": "",
+        "doi": "",
+        "url": "",
+        "citation": "Carascal, M. B., Capistrano, P. E., Figueras, M. D. L., Cataylo, O. L. A. C., Zuñiga, S. M. S., & Medriano, K. (2022). Experiences of COVID-19-recovered healthcare workers in a tertiary hospital in the Philippines: a mixed-method inquiry. INQUIRY: The Journal of Health Care Organization, Provision, and Financing.",
+        "description": "Mixed-methods study examining the experiences and challenges faced by healthcare workers who recovered from COVID-19 in a Philippine tertiary hospital setting."
+      }
+    ]
+  },
+  "talks_and_presentations": [
     {
-      "name": "Talk 1 on Relevant Topic in Your Field",
-      "event": "UC San Francisco, Department of Testing",
-      "date": "2012-03-01",
-      "location": "San Francisco, CA, USA",
-      "description": ""
+      "title": "Data-driven model discovery for coupled time series",
+      "type": "Conference Talk",
+      "event": "MathPsych / ICCM 2025",
+      "date": "July 2025",
+      "location": "The Ohio State University, Ohio Union and Blackwell Inn",
+      "description": "Introduced a data-driven framework for discovery of parsimonious stochastic differential equation models from coupled time series data. Demonstrated applications to core affect dynamics from daily life studies. 20-minute presentation (15 min + 5 min Q&A)."
     },
     {
-      "name": "Tutorial 1 on Relevant Topic in Your Field",
-      "event": "UC-Berkeley Institute for Testing Science",
-      "date": "2013-03-01",
-      "location": "Berkeley, CA, USA",
-      "description": ""
+      "title": "Amortized stochastic time series models for intervention designs",
+      "type": "Poster Presentation", 
+      "event": "MathPsych @Psychonomics Satellite Meeting 2024",
+      "date": "November 2024",
+      "location": "New York Marriott Marquis",
+      "description": "Applied Ornstein-Uhlenbeck diffusion models to mobile health intervention data for psychological well-being in college students. Evaluated BayesFlow for simulation-based inference in hierarchical models."
     },
     {
-      "name": "Talk 2 on Relevant Topic in Your Field",
-      "event": "London School of Testing",
-      "date": "2014-02-01",
-      "location": "London, UK",
-      "description": ""
+      "title": "Amortized stochastic time series models for intervention designs",
+      "type": "Poster Presentation",
+      "event": "MathPsych / ICCM 2024",
+      "date": "July 2024",
+      "location": "Tilburg University, Cube building",
+      "description": "Hierarchical Bayesian interrupted Ornstein-Uhlenbeck model applied to mobile health data. Examined intervention effectiveness across four study phases and explored BayesFlow implementation strategies."
     },
     {
-      "name": "Conference Proceeding talk 3 on Relevant Topic in Your Field",
-      "event": "Testing Institute of America 2014 Annual Conference",
-      "date": "2014-03-01",
-      "location": "Los Angeles, CA, USA",
-      "description": ""
+      "title": "Bayesian hierarchical Ornstein-Uhlenbeck models for intervention designs",
+      "type": "Poster Presentation",
+      "event": "SIDIC (Psychonomics-related meeting)",
+      "date": "November 2023",
+      "location": "Grand Ballroom, Hilton San Francisco Union Square",
+      "description": "Extended OU model analysis with BayesFlow implementation for simulation-based inference. Explored intervention effectiveness through Bayes factors on linear contrasts, revealing habituation patterns in attractor and elasticity parameters. Investigated BayesFlow applicability for covariates, multidimensional variates, and response artifacts."
+    },
+    {
+      "title": "Bayesian hierarchical Ornstein-Uhlenbeck models for intervention designs",
+      "type": "Poster Presentation",
+      "event": "MathPsych/ICCM/EMPG 2023",
+      "date": "July 2023",
+      "location": "University of Amsterdam, Roeterseiland campus",
+      "description": "Applied hierarchical Bayesian OU models to mobile health intervention data for psychological well-being. Demonstrated estimation of intervention effectiveness, persistence effects, and individual-level response features."
+    }    
+  ],
+  "honors_and_awards": [
+    {
+      "title": "Tarow and Minako Indow Fellowship",
+      "organization": "University of California, Irvine - Department of Cognitive Sciences",
+      "date": "2025",
+      "description": "$7,000 fellowship awarded annually to two graduate students in recognition of exceptional research skills and productivity, as demonstrated during advancement to PhD candidacy. Awarded for research on 'Methods for Time Series Data in Cognitive and Psychological Sciences' under advisor Joachim Vandekerckhove."
+    },
+    {
+      "title": "Best Poster Award",
+      "organization": "MathPsych / ICCM 2024",
+      "date": "July 2024",
+      "description": "Awarded for poster 'Amortized stochastic time series models for intervention designs' by Medriano, K., Oravecz, Z., & Vandekerckhove, J. Recognition for outstanding research presentation on Bayesian hierarchical models and BayesFlow implementation."
+    },
+    {
+      "title": "Best Poster Award",
+      "organization": "MathPsych/ICCM/EMPG 2023",
+      "date": "July 2023",
+      "description": "Awarded for poster 'Bayesian hierarchical Ornstein-Uhlenbeck models for intervention designs' by Medriano, K., Oravecz, Z., & Vandekerckhove, J. Recognition for exceptional research on mobile health intervention modeling."
+    },
+    {
+      "title": "Magna Cum Laude",
+      "organization": "College of Science, University of Santo Tomas, Philippines",
+      "date": "Jun 2016",
+      "description": "Academic distinction for graduating with honor from undergraduate studies."
+    },
+    {
+      "title": "Academic Excellence Award in Psychology",
+      "organization": "College of Science, University of Santo Tomas, Philippines",
+      "date": "June 2016",
+      "description": "Awarded for graduating as the top student in the Psychology academic program."
+    },
+    {
+      "title": "Academic Program Award",
+      "organization": "UST Psychological Alumni Association, Philippines",
+      "date": "June 2016",
+      "description": "Awarded for exhibiting exemplary academic performance throughout undergraduate studies."
+    },
+    {
+      "title": "Santo Tomas Academic Award Scholarship",
+      "organization": "University of Santo Tomas, Philippines",
+      "date": "June 2012 – June 2016",
+      "description": "Full scholarship award for academic excellence; 100% tuition waived throughout entire undergraduate study (4 years)."
     }
   ],
-  "teaching": [
+  "professional_experience": [
     {
-      "course": "Teaching experience 1",
-      "institution": "University 1, Department",
-      "date": "2014-01-01",
-      "role": "Undergraduate course",
-      "description": ""
+      "position": "Graduate Research Assistant",
+      "organization": "University of California, Irvine",
+      "startDate": "September 2022",
+      "endDate": "Present",
+      "location": "Irvine, CA",
+      "responsibilities": [
+        "Conduct independent research on Bayesian hierarchical models and time series analysis",
+        "Develop novel statistical methods for cognitive science applications",
+        "Collaborate on mobile health intervention design projects",
+        "Present research findings at academic conferences"
+      ]
     },
     {
-      "course": "Teaching experience 2",
-      "institution": "University 1, Department",
-      "date": "2015-01-01",
-      "role": "Workshop",
-      "description": ""
+      "position": "Independent Researcher",
+      "organization": "Research Collaborations",
+      "startDate": "April 2021",
+      "endDate": "February 2022",
+      "location": "Manila, Philippines",
+      "responsibilities": [
+        "Conducted statistical analyses (ANOVA, t-tests, etc.) using R for a study on Filipino attitudes towards LGBTQ+ individuals, focusing on homonegativity and sexual prejudice",
+        "Collaborated with researchers from The Medical City (a tertiary hospital) to investigate the experiences of COVID-19-recovered healthcare workers",
+        "Performed statistical analyses to assess the impact on healthcare worker well-being and work performance"
+      ]
+    },
+    {
+      "position": "Benchmark and Portfolio Database Associate",
+      "organization": "MSCI",
+      "startDate": "January 2021",
+      "endDate": "April 2021",
+      "location": "Manila, Philippines",
+      "responsibilities": [
+        "Investigated and resolved data quality issues, identifying root causes (e.g., input errors, methodology issues)",
+        "Improved data accuracy using DML and TCL",
+        "Provided client support, addressing inquiries on data accuracy, methodology, and index computations"
+      ]
+    },
+    {
+      "position": "Benchmark and Portfolio Database Analyst",
+      "organization": "MSCI",
+      "startDate": "April 2019",
+      "endDate": "January 2021",
+      "location": "Manila, Philippines",
+      "responsibilities": [
+        "Optimized Perl and Python codes for more efficient data processing and improved readability",
+        "Developed an automated data processing script integrated with the Jira API",
+        "Led and mentored the Philippine team, organizing meetings, overseeing projects, and training new hires",
+        "Spearheaded a key project to adapt financial data pipelines for a new industry classification standard",
+        "Coordinated code development, testing, deployment, and client communication to ensure seamless implementation"
+      ]
+    },
+    {
+      "position": "Teaching Assistant",
+      "organization": "University of California, Irvine",
+      "startDate": "[Start Date]",
+      "endDate": "[End Date]",
+      "location": "Irvine, CA",
+      "responsibilities": [
+        "Assist in teaching statistics and research methods courses",
+        "Provide statistical consulting to graduate students",
+        "Grade assignments and provide feedback on statistical analyses"
+      ]
     }
   ],
-  "portfolio": [
+  "skills": [
     {
-      "name": "Portfolio item number 1",
-      "category": "portfolio",
-      "date": "",
-      "url": "",
-      "description": "Short description of portfolio item number 1<br/><img src='/images/500x300.png'>"
+      "category": "Programming Languages",
+      "items": ["R", "Python", "MATLAB", "Stan", "JAGS"]
+    },
+    {
+      "category": "Statistical Methods",
+      "items": ["Bayesian Methods", "Time Series Analysis", "Hierarchical Modeling", "Machine Learning", "Statistical Inference", "Diffusion Processes"]
+    },
+    {
+      "category": "Software & Tools",
+      "items": ["RStudio", "Jupyter", "Git", "LaTeX", "Stan", "BUGS/JAGS", "SPSS", "Markdown"]
+    },
+    {
+      "category": "Research Areas",
+      "items": ["Cognitive Sciences", "Computational Modeling", "Mobile Health", "Model Discovery", "Ornstein-Uhlenbeck Processes", "Intervention Design"]
+    },
+    {
+      "category": "Languages",
+      "items": ["English (Native)"]
+    }
+  ],
+  "references": [
+    {
+      "name": "[Advisor Name]",
+      "position": "Professor",
+      "institution": "University of California, Irvine - Cognitive Sciences",
+      "email": "[advisor.email@uci.edu]",
+      "phone": "[Phone Number]",
+      "relationship": "PhD Advisor"
+    },
+    {
+      "name": "[Committee Member Name]",
+      "position": "Professor", 
+      "institution": "University of California, Irvine",
+      "email": "[committee.email@uci.edu]",
+      "phone": "[Phone Number]",
+      "relationship": "Dissertation Committee Member"
+    },
+    {
+      "name": "[Collaborator Name]",
+      "position": "[Position]",
+      "institution": "[Institution]",
+      "email": "[collaborator.email@institution.edu]",
+      "phone": "[Phone Number]",
+      "relationship": "Research Collaborator"
     }
   ]
 }

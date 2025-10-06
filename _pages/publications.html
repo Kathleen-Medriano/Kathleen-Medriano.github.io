@@ -5,31 +5,103 @@ permalink: /publications/
 author_profile: true
 ---
 
+{% assign cv = site.data.cv %}
+
 {% if site.author.googlescholar %}
   <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
 {% endif %}
 
 {% include base_path %}
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
+<style>
+  .publication-section {
+    margin-bottom: 2em;
+  }
+  
+  .publication-item {
+    margin-bottom: 1.5em;
+    padding: 1em;
+    border-left: 3px solid #2c3e50;
+    background-color: #f8f9fa;
+  }
+  
+  .publication-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 0.5em;
+  }
+  
+  .publication-title a {
+    color: #2c3e50;
+    text-decoration: none;
+  }
+  
+  .publication-title a:hover {
+    text-decoration: underline;
+  }
+  
+  .publication-authors {
+    font-style: italic;
+    margin-bottom: 0.3em;
+  }
+  
+  .publication-journal {
+    color: #555;
+    margin-bottom: 0.3em;
+  }
+  
+  .publication-description {
+    color: #666;
+    margin-top: 0.5em;
+  }
+  
+  .manuscript-status {
+    color: #d35400;
+    font-weight: bold;
+  }
+</style>
+
+<!-- Publications from CV data -->
+{% if cv.publications.manuscripts_in_prep.size > 0 %}
+<div class="publication-section">
+  <h2>Manuscripts in Preparation / Under Review</h2>
+  <hr>
+  {% for manuscript in cv.publications.manuscripts_in_prep %}
+  <div class="publication-item">
+    <div class="publication-title">{{ manuscript.title }}</div>
+    <div class="publication-authors">{{ manuscript.authors | join: ", " }}</div>
+    <div class="publication-journal manuscript-status">{{ manuscript.status }}{% if manuscript.expected_submission %}, Expected submission: {{ manuscript.expected_submission }}{% endif %}</div>
+    {% if manuscript.description %}
+    <div class="publication-description">{{ manuscript.description }}</div>
+    {% endif %}
+  </div>
   {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
+</div>
+{% endif %}
+
+{% if cv.publications.peer_reviewed.size > 0 %}
+<div class="publication-section">
+  <h2>Peer-Reviewed Journal Articles</h2>
+  <hr>
+  {% for publication in cv.publications.peer_reviewed reversed %}
+  <div class="publication-item">
+    <div class="publication-title">
+      {% if publication.url %}<a href="{{ publication.url }}" target="_blank">{% endif %}
+      {{ publication.title }}
+      {% if publication.url %}</a>{% endif %}
+    </div>
+    <div class="publication-authors">{{ publication.authors | join: ", " }}</div>
+    <div class="publication-journal">
+      <em>{{ publication.journal }}</em>{% if publication.volume %}, {{ publication.volume }}{% endif %}{% if publication.issue %}({{ publication.issue }}){% endif %}{% if publication.pages %}: {{ publication.pages }}{% endif %} ({{ publication.year }})
+      {% if publication.doi %}<br>DOI: <a href="https://doi.org/{{ publication.doi }}" target="_blank">{{ publication.doi }}</a>{% endif %}
+    </div>
+    {% if publication.description %}
+    <div class="publication-description">{{ publication.description }}</div>
+    {% endif %}
+  </div>
   {% endfor %}
+</div>
 {% endif %}
 
 
