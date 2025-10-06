@@ -1,11 +1,12 @@
-name: Generate CV PDF
+name: Manual CV PDF Generation
 
 on:
-  push:
-    paths:
-      - '_data/cv.json'
-      - 'generate_cv_pdf.py'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual PDF generation'
+        required: false
+        default: 'Manual trigger'
 
 permissions:
   contents: write
@@ -18,7 +19,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -32,14 +33,16 @@ jobs:
     
     - name: Generate CV PDF
       run: |
+        echo "Generating PDF for reason: ${{ github.event.inputs.reason }}"
         python generate_cv_pdf.py
     
-    - name: Check if PDF was generated
+    - name: Verify PDF generation
       run: |
         if [ -f "files/cv.pdf" ]; then
           echo "✓ PDF generated successfully"
           ls -la files/cv.pdf
           file files/cv.pdf
+          echo "PDF size: $(stat -c%s files/cv.pdf) bytes"
         else
           echo "✗ PDF generation failed"
           exit 1
@@ -53,17 +56,17 @@ jobs:
         if [ -f "files/cv.pdf" ]; then
           git add files/cv.pdf
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit - PDF is already up to date"
           else
-            git commit -m "Auto-update CV PDF [skip ci]"
+            git commit -m "Update CV PDF: ${{ github.event.inputs.reason }} [skip ci]"
             git push
-            echo "✓ PDF committed and pushed"
+            echo "✓ PDF committed and pushed successfully"
           fi
         fi
     
     - name: Upload PDF as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: cv-pdf
+        name: cv-pdf-manual
         path: files/cv.pdf
-        retention-days: 30
+        retention-days: 7
