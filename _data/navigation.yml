@@ -27,7 +27,8 @@ main:
   #   url: /year-archive/
     
   - title: "CV"
-    url: /cv/
+    url: /cv-pdf/
+    target: _blank
 
   - title: "Contact"
     url: /contact/
