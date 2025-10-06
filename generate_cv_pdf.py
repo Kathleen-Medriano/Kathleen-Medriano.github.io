@@ -263,23 +263,6 @@ def generate_pdf(cv_data, output_path):
         
         story.append(Spacer(1, 12))
     
-    # Skills
-    skills = cv_data.get('skills', [])
-    if skills:
-        story.append(Paragraph('Skills', styles['CVSectionHeader']))
-        for skill in skills:
-            skill_text = skill.get('name', '')
-            if skill.get('level'):
-                skill_text += f" ({skill['level']})"
-            if skill_text:
-                story.append(Paragraph(skill_text, styles['CVEntryTitle']))
-            
-            if skill.get('keywords'):
-                keywords_text = ', '.join(skill['keywords'])
-                story.append(Paragraph(keywords_text, styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
     # Awards
     awards = cv_data.get('awards', [])
     if awards:
@@ -362,6 +345,202 @@ def generate_pdf(cv_data, output_path):
                 
                 if pub.get('description'):
                     story.append(Paragraph(pub['description'], styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Research Experience
+    research_experience = cv_data.get('research_experience', [])
+    if research_experience:
+        story.append(Paragraph('Research Experience', styles['CVSectionHeader']))
+        for research in research_experience:
+            if research.get('position'):
+                story.append(Paragraph(research['position'], styles['CVEntryTitle']))
+            
+            if research.get('institution'):
+                story.append(Paragraph(research['institution'], styles['CVEntryOrg']))
+            
+            if research.get('supervisor'):
+                story.append(Paragraph(f"Supervisor: {research['supervisor']}", styles['CVEntryOrg']))
+            
+            date_range = format_date_range(research.get('startDate'), research.get('endDate'))
+            if date_range:
+                story.append(Paragraph(date_range, styles['CVEntryDate']))
+            
+            if research.get('description'):
+                story.append(Paragraph(research['description'], styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Talks and Presentations
+    talks_and_presentations = cv_data.get('talks_and_presentations', [])
+    if talks_and_presentations:
+        story.append(Paragraph('Talks and Presentations', styles['CVSectionHeader']))
+        for talk in talks_and_presentations:
+            if talk.get('title'):
+                story.append(Paragraph(talk['title'], styles['CVEntryTitle']))
+            
+            talk_info = []
+            if talk.get('type'):
+                talk_info.append(talk['type'])
+            if talk.get('event'):
+                talk_info.append(talk['event'])
+            
+            if talk_info:
+                story.append(Paragraph(', '.join(talk_info), styles['CVEntryOrg']))
+            
+            location_date = []
+            if talk.get('date'):
+                location_date.append(talk['date'])
+            if talk.get('location'):
+                location_date.append(talk['location'])
+            
+            if location_date:
+                story.append(Paragraph(', '.join(location_date), styles['CVEntryDate']))
+            
+            if talk.get('description'):
+                story.append(Paragraph(talk['description'], styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Honors and Awards
+    honors_and_awards = cv_data.get('honors_and_awards', [])
+    if honors_and_awards:
+        story.append(Paragraph('Honors and Awards', styles['CVSectionHeader']))
+        for award in honors_and_awards:
+            if award.get('title'):
+                story.append(Paragraph(award['title'], styles['CVEntryTitle']))
+            
+            if award.get('organization'):
+                story.append(Paragraph(award['organization'], styles['CVEntryOrg']))
+            
+            if award.get('date'):
+                story.append(Paragraph(award['date'], styles['CVEntryDate']))
+            
+            if award.get('description'):
+                story.append(Paragraph(award['description'], styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Professional Experience
+    professional_experience = cv_data.get('professional_experience', [])
+    if professional_experience:
+        story.append(Paragraph('Professional Experience', styles['CVSectionHeader']))
+        for job in professional_experience:
+            if job.get('position'):
+                story.append(Paragraph(job['position'], styles['CVEntryTitle']))
+            
+            org_parts = []
+            if job.get('organization'):
+                org_parts.append(job['organization'])
+            if job.get('location'):
+                org_parts.append(job['location'])
+            
+            if org_parts:
+                story.append(Paragraph(', '.join(org_parts), styles['CVEntryOrg']))
+            
+            date_range = format_date_range(job.get('startDate'), job.get('endDate'))
+            if date_range:
+                story.append(Paragraph(date_range, styles['CVEntryDate']))
+            
+            if job.get('responsibilities'):
+                for responsibility in job['responsibilities']:
+                    story.append(Paragraph(f"• {responsibility}", styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Skills
+    skills = cv_data.get('skills', [])
+    if skills:
+        story.append(Paragraph('Skills', styles['CVSectionHeader']))
+        for skill in skills:
+            # Handle both standard resume.json format and custom format
+            if skill.get('category') and skill.get('items'):
+                # Custom format with category and items
+                story.append(Paragraph(skill['category'], styles['CVEntryTitle']))
+                if skill['items']:
+                    items_text = ', '.join(skill['items'])
+                    story.append(Paragraph(items_text, styles['CVEntryDesc']))
+            else:
+                # Standard resume.json format
+                skill_text = skill.get('name', '')
+                if skill.get('level'):
+                    skill_text += f" ({skill['level']})"
+                if skill_text:
+                    story.append(Paragraph(skill_text, styles['CVEntryTitle']))
+                
+                if skill.get('keywords'):
+                    keywords_text = ', '.join(skill['keywords'])
+                    story.append(Paragraph(keywords_text, styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # References
+    references = cv_data.get('references', [])
+    if references:
+        story.append(Paragraph('References', styles['CVSectionHeader']))
+        for ref in references:
+            if ref.get('name'):
+                story.append(Paragraph(ref['name'], styles['CVEntryTitle']))
+            
+            ref_info = []
+            if ref.get('position'):
+                ref_info.append(ref['position'])
+            if ref.get('institution'):
+                ref_info.append(ref['institution'])
+            
+            if ref_info:
+                story.append(Paragraph(', '.join(ref_info), styles['CVEntryOrg']))
+            
+            contact_info = []
+            if ref.get('email'):
+                contact_info.append(f"Email: {ref['email']}")
+            if ref.get('phone'):
+                contact_info.append(f"Phone: {ref['phone']}")
+            
+            if contact_info:
+                story.append(Paragraph(', '.join(contact_info), styles['CVEntryDesc']))
+            
+            if ref.get('relationship'):
+                story.append(Paragraph(f"Relationship: {ref['relationship']}", styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Projects
+    projects = cv_data.get('projects', [])
+    if projects:
+        story.append(Paragraph('Projects', styles['CVSectionHeader']))
+        for project in projects:
+            if project.get('name'):
+                story.append(Paragraph(project['name'], styles['CVEntryTitle']))
+            
+            if project.get('url'):
+                story.append(Paragraph(project['url'], styles['CVEntryOrg']))
+            
+            date_range = format_date_range(project.get('startDate'), project.get('endDate'))
+            if date_range:
+                story.append(Paragraph(date_range, styles['CVEntryDate']))
+            
+            if project.get('summary'):
+                story.append(Paragraph(project['summary'], styles['CVEntryDesc']))
+            
+            if project.get('highlights'):
+                for highlight in project['highlights']:
+                    story.append(Paragraph(f"• {highlight}", styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
+    
+    # Languages
+    languages = cv_data.get('languages', [])
+    if languages:
+        story.append(Paragraph('Languages', styles['CVSectionHeader']))
+        for lang in languages:
+            lang_text = lang.get('language', '')
+            if lang.get('fluency'):
+                lang_text += f" - {lang['fluency']}"
+            if lang_text:
+                story.append(Paragraph(lang_text, styles['CVEntryDesc']))
+        
+        story.append(Spacer(1, 12))
         
         story.append(Spacer(1, 12))
     
