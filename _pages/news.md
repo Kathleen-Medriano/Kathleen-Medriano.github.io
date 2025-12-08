@@ -56,16 +56,16 @@ author_profile: true
 {% assign news_by_year = site.news | group_by_exp: "item", "item.date | date: '%Y'" | sort: "name" | reverse %}
 
 {% for year in news_by_year %}
-  <h2 class="year-divider">{{ year.name }}</h2>
-  {% assign sorted_news = year.items | sort: "date" | reverse %}
-  {% for item in sorted_news %}
-    <div class="news-item">
-      <div class="news-date">
-        {{ item.date | date: "%B %Y" }}
-      </div>
-      <div class="news-title">{{ item.title }}</div>
-      <div class="news-excerpt">{{ item.excerpt }}</div>
-      <a href="{{ base_path }}{{ item.url }}" class="news-link">Read more →</a>
-    </div>
-  {% endfor %}
+<h2 class="year-divider">{{ year.name }}</h2>
+{% assign sorted_news = year.items | sort: "date" | reverse %}
+{% for item in sorted_news %}
+<div class="news-item">
+  <div class="news-date">
+    {{ item.date | date: "%B %Y" }}
+  </div>
+  <div class="news-title">{{ item.title }}</div>
+  <div class="news-excerpt">{{ item.excerpt | strip_html | truncatewords: 30 }}</div>
+  <a href="{{ base_path }}{{ item.url }}" class="news-link">Read more →</a>
+</div>
+{% endfor %}
 {% endfor %}
