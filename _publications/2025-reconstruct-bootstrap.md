@@ -5,7 +5,8 @@ category: manuscripts_in_prep
 permalink: /publication/2025-reconstruct-bootstrap
 excerpt: 'A novel statistical test to assess whether a diffusion process model is sufficient for observed time series data, using Kramers-Moyal expansion and bootstrap methods.'
 date: 2025-01-01
-venue: 'In Preparation'
+venue: 'Submitted'
+paperurl: 'http://psyarxiv.com/h2dqu_v1'
 authors: 'Kathleen Medriano, Joachim Vandekerckhove'
 ---
 
