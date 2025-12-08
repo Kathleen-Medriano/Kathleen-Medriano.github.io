@@ -11,10 +11,10 @@ main:
   # - title: "Projects"
   #   url: /projects/
 
-  - title: "Publications"
+  - title: "Publications and Projects"
     url: /publications/
 
-  - title: "News"
+  - title: "Recent News & Highlights"
     url: /news/
 
   # - title: "Talks"

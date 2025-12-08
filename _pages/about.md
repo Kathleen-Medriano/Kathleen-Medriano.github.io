@@ -33,6 +33,44 @@ My academic journey reflects a progression toward interdisciplinary research in 
 
 Currently, I'm pursuing my PhD in Cognitive Sciences at UC Irvine, where I synthesize insights from psychology, mathematics, and statistics to tackle complex questions about human cognition. This interdisciplinary foundation allows me to bridge theoretical cognitive science with rigorous quantitative methods, enabling me to both understand fundamental cognitive processes and develop sophisticated computational models to test and refine our theories.
 
+## Recent News & Highlights
+
+<style>
+  .home-news-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .home-news-list li {
+    margin-bottom: 0.8em;
+  }
+  
+  .view-all-news {
+    margin-top: 1em;
+  }
+  
+  .view-all-news a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .view-all-news a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<ul class="home-news-list">
+{% assign recent_news = site.news | sort: "date" | reverse | limit: 3 %}
+{% for item in recent_news %}
+  <li>{{ item.title }}, {{ item.date | date: "%B %Y" }}</li>
+{% endfor %}
+</ul>
+
+<div class="view-all-news">
+  <a href="{{ base_path }}/news/">View all news →</a>
+</div>
+
 <!-- ## Get in Touch
 
 I'm always interested in discussing research collaborations, statistical consulting opportunities, or conversations about the intersection of cognitive science, statistics, machine and computational methods. Feel free to reach out via email or connect with me through the links in the sidebar.
