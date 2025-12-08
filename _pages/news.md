@@ -1,6 +1,6 @@
 ---
 layout: archive
-title: "News"
+title: "Recent News & Highlights"
 permalink: /news/
 author_profile: true
 ---
@@ -50,8 +50,6 @@ author_profile: true
     padding-bottom: 0.5em;
   }
 </style>
-
-# Recent News & Highlights
 
 {% assign news_by_year = site.news | group_by_exp: "item", "item.date | date: '%Y'" | sort: "name" | reverse %}
 
