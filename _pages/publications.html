@@ -154,5 +154,31 @@ author_profile: true
 </div>
 {% endif %}
 
+<!-- Past Projects -->
+{% assign past_projects = site.publications | where: "category", "past_projects" | sort: "date" | reverse %}
+{% if past_projects.size > 0 %}
+<div class="publication-section">
+  <h2 class="section-divider">Past Projects</h2>
+  {% for pub in past_projects %}
+  <div class="publication-item">
+    <div class="publication-title">
+      {% if pub.paperurl %}<a href="{{ pub.paperurl }}" target="_blank">{% endif %}
+      {{ pub.title }}
+      {% if pub.paperurl %}</a>{% endif %}
+    </div>
+    {% if pub.authors %}
+    <div class="publication-authors">{{ pub.authors }}</div>
+    {% endif %}
+    <div class="publication-venue">
+      <em>{{ pub.venue }}</em> ({{ pub.date | date: "%Y" }})
+    </div>
+    {% if pub.excerpt %}
+    <div class="publication-excerpt">{{ pub.excerpt | strip_html }}</div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 
 
