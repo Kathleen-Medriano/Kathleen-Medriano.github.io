@@ -5,8 +5,6 @@ permalink: /publications/
 author_profile: true
 ---
 
-{% assign cv = site.data.cv %}
-
 {% if site.author.googlescholar %}
   <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
 {% endif %}
@@ -15,13 +13,21 @@ author_profile: true
 
 <style>
   .publication-section {
-    margin-bottom: 2em;
+    margin-bottom: 3em;
+  }
+  
+  .section-divider {
+    margin: 2em 0 1em 0;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 0.5em;
+    font-size: 1.5em;
+    font-weight: bold;
   }
   
   .publication-item {
     margin-bottom: 1.5em;
-    padding: 1em;
-    border-left: 3px solid #2c3e50;
+    padding: 1.2em;
+    border-left: 4px solid #2c3e50;
     background-color: #f8f9fa;
   }
   
@@ -39,65 +45,109 @@ author_profile: true
   
   .publication-title a:hover {
     text-decoration: underline;
+    color: #3498db;
   }
   
   .publication-authors {
     font-style: italic;
     margin-bottom: 0.3em;
+    color: #555;
   }
   
-  .publication-journal {
-    color: #555;
+  .publication-venue {
+    color: #666;
     margin-bottom: 0.3em;
   }
   
-  .publication-description {
+  .publication-venue em {
+    font-weight: 500;
+  }
+  
+  .publication-excerpt {
     color: #666;
     margin-top: 0.5em;
+    font-size: 0.95em;
   }
   
   .manuscript-status {
     color: #d35400;
-    font-weight: bold;
+    font-weight: 500;
+  }
+  
+  .doi-link {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  .doi-link:hover {
+    text-decoration: underline;
   }
 </style>
 
-<!-- Publications from CV data -->
-{% if cv.publications.manuscripts_in_prep.size > 0 %}
+<!-- Manuscripts in Preparation / Under Review -->
+{% assign manuscripts_in_prep = site.publications | where: "category", "manuscripts_in_prep" | sort: "date" | reverse %}
+{% if manuscripts_in_prep.size > 0 %}
 <div class="publication-section">
-  <h2>Manuscripts in Preparation / Under Review</h2>
-  <hr>
-  {% for manuscript in cv.publications.manuscripts_in_prep %}
+  <h2 class="section-divider">Manuscripts in Preparation / Under Review</h2>
+  {% for pub in manuscripts_in_prep %}
   <div class="publication-item">
-    <div class="publication-title">{{ manuscript.title }}</div>
-    <div class="publication-authors">{{ manuscript.authors | join: ", " }}</div>
-    <div class="publication-journal manuscript-status">{{ manuscript.status }}{% if manuscript.expected_submission %}, Expected submission: {{ manuscript.expected_submission }}{% endif %}</div>
-    {% if manuscript.description %}
-    <div class="publication-description">{{ manuscript.description }}</div>
+    <div class="publication-title">
+      {% if pub.paperurl %}<a href="{{ pub.paperurl }}" target="_blank">{% endif %}
+      {{ pub.title }}
+      {% if pub.paperurl %}</a>{% endif %}
+    </div>
+    {% if pub.authors %}
+    <div class="publication-authors">{{ pub.authors }}</div>
+    {% endif %}
+    <div class="publication-venue manuscript-status">{{ pub.venue }}</div>
+    {% if pub.excerpt %}
+    <div class="publication-excerpt">{{ pub.excerpt | strip_html }}</div>
     {% endif %}
   </div>
   {% endfor %}
 </div>
 {% endif %}
 
-{% if cv.publications.peer_reviewed.size > 0 %}
+<!-- Peer-Reviewed Journal Articles -->
+{% assign peer_reviewed = site.publications | where: "category", "peer_reviewed" | sort: "date" | reverse %}
+{% if peer_reviewed.size > 0 %}
 <div class="publication-section">
-  <h2>Peer-Reviewed Journal Articles</h2>
-  <hr>
-  {% for publication in cv.publications.peer_reviewed reversed %}
+  <h2 class="section-divider">Peer-Reviewed Journal Articles</h2>
+  {% for pub in peer_reviewed %}
   <div class="publication-item">
     <div class="publication-title">
-      {% if publication.url %}<a href="{{ publication.url }}" target="_blank">{% endif %}
-      {{ publication.title }}
-      {% if publication.url %}</a>{% endif %}
+      {% if pub.paperurl %}<a href="{{ pub.paperurl }}" target="_blank">{% endif %}
+      {{ pub.title }}
+      {% if pub.paperurl %}</a>{% endif %}
     </div>
-    <div class="publication-authors">{{ publication.authors | join: ", " }}</div>
-    <div class="publication-journal">
-      <em>{{ publication.journal }}</em>{% if publication.volume %}, {{ publication.volume }}{% endif %}{% if publication.issue %}({{ publication.issue }}){% endif %}{% if publication.pages %}: {{ publication.pages }}{% endif %} ({{ publication.year }})
-      {% if publication.doi %}<br>DOI: <a href="https://doi.org/{{ publication.doi }}" target="_blank">{{ publication.doi }}</a>{% endif %}
+    {% if pub.authors %}
+    <div class="publication-authors">{{ pub.authors }}</div>
+    {% endif %}
+    <div class="publication-venue">
+      <em>{{ pub.venue }}</em> ({{ pub.date | date: "%Y" }})
+      {% if pub.doi %}<br>DOI: <a href="https://doi.org/{{ pub.doi }}" target="_blank" class="doi-link">{{ pub.doi }}</a>{% endif %}
     </div>
-    {% if publication.description %}
-    <div class="publication-description">{{ publication.description }}</div>
+    {% if pub.excerpt %}
+    <div class="publication-excerpt">{{ pub.excerpt | strip_html }}</div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Ongoing Projects -->
+{% assign ongoing = site.publications | where: "category", "ongoing" | sort: "date" | reverse %}
+{% if ongoing.size > 0 %}
+<div class="publication-section">
+  <h2 class="section-divider">Ongoing Projects</h2>
+  {% for pub in ongoing %}
+  <div class="publication-item">
+    <div class="publication-title">{{ pub.title }}</div>
+    {% if pub.authors %}
+    <div class="publication-authors">{{ pub.authors }}</div>
+    {% endif %}
+    {% if pub.excerpt %}
+    <div class="publication-excerpt">{{ pub.excerpt | strip_html }}</div>
     {% endif %}
   </div>
   {% endfor %}
