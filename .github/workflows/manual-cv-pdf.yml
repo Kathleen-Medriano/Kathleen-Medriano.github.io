@@ -1,4 +1,8 @@
-name: Manual CV PDF Generation
+name: Manual CV PDF Generation (DISABLED)
+
+# Workflow disabled - CV is manually managed
+# This workflow is kept for reference but will not run
+# To re-enable, remove the 'if: false' condition below
 
 on:
   workflow_dispatch:
@@ -14,6 +18,7 @@ permissions:
 jobs:
   generate-pdf:
     runs-on: ubuntu-latest
+    if: false  # Disabled - CV is manually managed
     
     steps:
     - name: Checkout repository

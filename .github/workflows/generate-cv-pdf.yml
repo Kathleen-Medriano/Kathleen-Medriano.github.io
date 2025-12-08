@@ -1,11 +1,16 @@
-name: Generate CV PDF
+name: Generate CV PDF (DISABLED)
+
+# Workflow disabled - CV is manually managed
+# To re-enable, uncomment the 'on:' section below
+# on:
+#   push:
+#     paths:
+#       - '_data/cv.json'
+#       - 'generate_cv_pdf.py'
+#   workflow_dispatch: # Allow manual trigger
 
 on:
-  push:
-    paths:
-      - '_data/cv.json'
-      - 'generate_cv_pdf.py'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch: # Only allow manual trigger, no automatic runs
 
 permissions:
   contents: write
