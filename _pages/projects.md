@@ -7,8 +7,6 @@ author_profile: true
 
 {% include base_path %}
 
-# Research Projects
-
 ### Bayesian Hierarchical Ornstein-Uhlenbeck models for intervention designs in mobile health
 Modeling time series of self-reported mood levels to determine the effectiveness of mobile health interventions.
 
