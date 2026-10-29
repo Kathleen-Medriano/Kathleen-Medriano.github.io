@@ -9,29 +9,25 @@ redirect_from:
 
 {% include base_path %}
 
-I'm a PhD student in Cognitive Sciences at the University of California, Irvine, with a Master's degree in Statistics. My research focuses on the intersection of cognitive science, statistics, machine learning, and computational modeling.
+I'm a PhD student in Cognitive Sciences at the University of California, Irvine, where I have studied since September 2022. I completed an MS in Statistics at UC Irvine from September 2022 to December 2024. My dissertation is on methods for time series data in the cognitive sciences, advised by Joachim Vandekerckhove. My research sits at the intersection of cognitive science, statistics, and computational modeling.
 
 ## Research Interests
 
-My work centers on understanding complex cognitive processes through advanced statistical and mathematical modeling approaches. I specialize in:
+My work centers on understanding complex cognitive processes through statistical and mathematical modeling. I specialize in:
 
-- **Time Series Analysis**: Developing and applying sophisticated temporal models to understand cognitive dynamics
-- **Machine Learning & Statistical Modeling**: Leveraging computational methods to discover patterns in cognitive data; Creating robust statistical frameworks for cognitive science research
-- **Bayesian Methods**: Using Bayesian approaches for proper accounting of uncertainty in any inference procedure
+- **Time Series Analysis**: Developing and applying temporal models to understand cognitive dynamics
+- **Bayesian and Statistical Modeling**: Building statistical frameworks for cognitive science research, with a proper accounting of uncertainty
+- **Model Discovery**: Developing data-driven algorithms to identify plausible generative models for cognitive data
 
 ## Current Research
 
-I'm currently working on several exciting projects that bridge cognitive science and advanced statistical methods:
-
-- **Bayesian Hierarchical Models**: Developing Ornstein-Uhlenbeck models for intervention designs in mobile health applications
-- **Diffusion process sufficiency check**: Creating statistical test to assess the sufficiency of diffusion processes in modeling time series data  
-- **Model Discovery**: Developing data-driven algorithms to identify plausible generative models for cognitive data with application in neural time series (e.g. EEG/MEG)
+- **Diffusion process sufficiency**: A reconstruct-then-bootstrap test of whether a diffusion process is sufficient for an observed time series (submitted)
+- **Bayesian hierarchical models**: Ornstein–Uhlenbeck models for intervention design in mobile health (in preparation)
+- **Model discovery**: Data-driven discovery of parsimonious stochastic models for coupled time series, including core affect dynamics from daily life studies
 
 ## Academic Background
 
-My academic journey reflects a progression toward interdisciplinary research in cognitive science. I began with a Bachelor's degree in Psychology, which provided foundational knowledge of human cognition and behavior. Recognizing the need for stronger quantitative skills, I completed a Graduate Diploma in Mathematics, building expertise in formal mathematical reasoning and proof techniques. This led to a Master's degree in Statistics at UC Irvine, where I developed advanced skills in statistical inference, modeling, and data analysis.
-
-Currently, I'm pursuing my PhD in Cognitive Sciences at UC Irvine, where I synthesize insights from psychology, mathematics, and statistics to tackle complex questions about human cognition. This interdisciplinary foundation allows me to bridge theoretical cognitive science with rigorous quantitative methods, enabling me to both understand fundamental cognitive processes and develop sophisticated computational models to test and refine our theories.
+I began with a BS in Psychology at the University of Santo Tomas (June 2012–June 2016), which gave me a foundation in human cognition and behavior. I then completed a Graduate Diploma in Mathematics at the University of the Philippines Diliman (August 2017–July 2019). At UC Irvine I earned an MS in Statistics (September 2022–December 2024) and am pursuing a PhD in Cognitive Sciences (September 2022–present). That sequence lets me connect questions about human cognition with statistical inference, Bayesian modeling, and computational methods.
 
 ## Recent News & Highlights
 
@@ -70,11 +66,3 @@ Currently, I'm pursuing my PhD in Cognitive Sciences at UC Irvine, where I synth
 <div class="view-all-news">
   <a href="{{ base_path }}/news/">View all news →</a>
 </div>
-
-<!-- ## Get in Touch
-
-I'm always interested in discussing research collaborations, statistical consulting opportunities, or conversations about the intersection of cognitive science, statistics, machine and computational methods. Feel free to reach out via email or connect with me through the links in the sidebar.
-
-You can find more details about my research projects, publications, and academic background by exploring the different sections of this website. -->
-
-<!-- More info about configuring Academic Pages can be found in [the guide](https://academicpages.github.io/markdown/), the [growing wiki](https://github.com/academicpages/academicpages.github.io/wiki), and you can always [ask a question on GitHub](https://github.com/academicpages/academicpages.github.io/discussions). The [guides for the Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes/docs/configuration/) (which this theme was forked from) might also be helpful. -->

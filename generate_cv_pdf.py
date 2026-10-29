@@ -1,628 +1,462 @@
 #!/usr/bin/env python3
-"""
-CV PDF Generator
-Generates a PDF from the CV JSON data file.
-"""
+"""Generate a compact academic CV PDF from _data/cv.json."""
 
 import json
-import os
-from datetime import datetime
 from pathlib import Path
 
 try:
-    from reportlab.lib.pagesizes import letter, A4
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.colors import HexColor, black
+    from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_RIGHT
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
     from reportlab.lib.units import inch
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
-    from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT, TA_JUSTIFY
-    from reportlab.lib.colors import black, darkblue, gray
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    from reportlab.platypus import (
+        HRFlowable,
+        KeepTogether,
+        Paragraph,
+        SimpleDocTemplate,
+        Spacer,
+        Table,
+        TableStyle,
+    )
+
     REPORTLAB_AVAILABLE = True
 except ImportError:
     REPORTLAB_AVAILABLE = False
     print("Warning: reportlab not available. Install with: pip install reportlab")
 
+FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
+if REPORTLAB_AVAILABLE:
+    CONTENT_WIDTH = 7.1 * inch
+    DATE_WIDTH = 2.55 * inch
+
+
 def load_cv_data(json_path):
     """Load CV data from JSON file."""
     try:
-        with open(json_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        with open(json_path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
     except FileNotFoundError:
         print(f"Error: CV data file not found at {json_path}")
         return None
-    except json.JSONDecodeError as e:
-        print(f"Error: Invalid JSON in CV data file: {e}")
+    except json.JSONDecodeError as exc:
+        print(f"Error: Invalid JSON in CV data file: {exc}")
         return None
 
+
+def register_fonts():
+    """Use DejaVu Serif when it is installed so accents render correctly."""
+    regular = FONT_DIR / "DejaVuSerif.ttf"
+    bold = FONT_DIR / "DejaVuSerif-Bold.ttf"
+    italic = FONT_DIR / "DejaVuSerif-Italic.ttf"
+    bold_italic = FONT_DIR / "DejaVuSerif-BoldItalic.ttf"
+    if not all(path.exists() for path in (regular, bold, italic, bold_italic)):
+        return "Times-Roman", "Times-Bold", "Times-Italic"
+    pdfmetrics.registerFont(TTFont("DejaVu", str(regular)))
+    pdfmetrics.registerFont(TTFont("DejaVu-Bold", str(bold)))
+    pdfmetrics.registerFont(TTFont("DejaVu-Italic", str(italic)))
+    pdfmetrics.registerFont(TTFont("DejaVu-BoldItalic", str(bold_italic)))
+    pdfmetrics.registerFontFamily(
+        "DejaVu",
+        normal="DejaVu",
+        bold="DejaVu-Bold",
+        italic="DejaVu-Italic",
+        boldItalic="DejaVu-BoldItalic",
+    )
+    return "DejaVu", "DejaVu-Bold", "DejaVu-Italic"
+
+
 def create_styles():
-    """Create custom styles for the PDF."""
+    """Styles for a compact academic CV."""
+    font, font_bold, font_italic = register_fonts()
     styles = getSampleStyleSheet()
-    
-    # Custom styles
     styles.add(ParagraphStyle(
-        name='CVTitle',
-        parent=styles['Title'],
-        fontSize=24,
-        spaceAfter=12,
+        name="CVName",
+        fontName=font_bold,
+        fontSize=18,
+        leading=22,
         alignment=TA_CENTER,
-        textColor=darkblue
+        textColor=black,
+        spaceAfter=2,
     ))
-    
     styles.add(ParagraphStyle(
-        name='CVSubtitle',
-        parent=styles['Normal'],
-        fontSize=14,
-        spaceAfter=6,
+        name="CVContact",
+        fontName=font,
+        fontSize=9,
+        leading=12,
         alignment=TA_CENTER,
-        textColor=gray
-    ))
-    
-    styles.add(ParagraphStyle(
-        name='CVContact',
-        parent=styles['Normal'],
-        fontSize=10,
-        spaceAfter=12,
-        alignment=TA_CENTER,
-        textColor=black
-    ))
-    
-    styles.add(ParagraphStyle(
-        name='CVSectionHeader',
-        parent=styles['Heading2'],
-        fontSize=14,
-        spaceBefore=18,
-        spaceAfter=6,
-        textColor=darkblue,
-        borderWidth=1,
-        borderColor=darkblue,
-        borderPadding=3
-    ))
-    
-    styles.add(ParagraphStyle(
-        name='CVSubsectionHeader',
-        parent=styles['Normal'],
-        fontSize=12,
-        spaceBefore=12,
+        textColor=HexColor("#333333"),
         spaceAfter=4,
-        textColor=darkblue,
-        fontName='Helvetica-Bold'
     ))
-    
     styles.add(ParagraphStyle(
-        name='CVEntryTitle',
-        parent=styles['Normal'],
-        fontSize=12,
-        spaceBefore=6,
-        spaceAfter=2,
-        textColor=black,
-        fontName='Helvetica-Bold'
-    ))
-    
-    styles.add(ParagraphStyle(
-        name='CVEntryOrg',
-        parent=styles['Normal'],
+        name="CVSection",
+        fontName=font_bold,
         fontSize=11,
-        spaceAfter=2,
-        textColor=gray,
-        fontName='Helvetica-Oblique'
-    ))
-    
-    styles.add(ParagraphStyle(
-        name='CVEntryDate',
-        parent=styles['Normal'],
-        fontSize=10,
-        spaceAfter=2,
-        textColor=gray,
-        alignment=TA_RIGHT
-    ))
-    
-    styles.add(ParagraphStyle(
-        name='CVEntryDesc',
-        parent=styles['Normal'],
-        fontSize=10,
-        spaceAfter=6,
+        leading=13,
         textColor=black,
-        leftIndent=0.2*inch
+        spaceBefore=0,
+        spaceAfter=0,
     ))
-    
+    styles.add(ParagraphStyle(
+        name="CVSubsection",
+        fontName=font_bold,
+        fontSize=10,
+        leading=13,
+        textColor=black,
+        spaceBefore=4,
+        spaceAfter=3,
+    ))
+    styles.add(ParagraphStyle(
+        name="EntryTitle",
+        fontName=font_bold,
+        fontSize=10.5,
+        leading=13,
+        textColor=black,
+    ))
+    styles.add(ParagraphStyle(
+        name="EntryDate",
+        fontName=font,
+        fontSize=10,
+        leading=13,
+        alignment=TA_RIGHT,
+        textColor=black,
+    ))
+    styles.add(ParagraphStyle(
+        name="EntryOrg",
+        fontName=font_italic,
+        fontSize=10,
+        leading=12,
+        textColor=HexColor("#222222"),
+        spaceBefore=1,
+    ))
+    styles.add(ParagraphStyle(
+        name="EntryDesc",
+        fontName=font,
+        fontSize=9.5,
+        leading=12,
+        alignment=TA_JUSTIFY,
+        textColor=black,
+        spaceBefore=1,
+    ))
+    styles.add(ParagraphStyle(
+        name="SkillLine",
+        fontName=font,
+        fontSize=10,
+        leading=13,
+        textColor=black,
+        spaceBefore=1,
+        spaceAfter=1,
+    ))
     return styles
 
-def format_date_range(start_date, end_date):
-    """Format date range for display."""
-    if start_date and end_date:
-        return f"{start_date} - {end_date}"
-    elif start_date:
-        return f"{start_date} - Present"
-    elif end_date:
-        return end_date
-    else:
+
+def esc(text):
+    """Escape text for ReportLab paragraphs."""
+    if text is None:
         return ""
+    return (
+        str(text)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+    )
+
+
+def is_placeholder(*values):
+    """True when a field still contains an unfilled bracket placeholder."""
+    return any(value and "[" in str(value) for value in values)
+
+
+def format_date_range(start_date, end_date):
+    """Format a start and end date for the right-hand column."""
+    if start_date and end_date:
+        return f"{start_date} – {end_date}"
+    if start_date:
+        return f"{start_date} – Present"
+    return end_date or ""
+
+
+def add_section(story, styles, title):
+    story.append(Spacer(1, 9))
+    story.append(Paragraph(esc(title).upper(), styles["CVSection"]))
+    story.append(HRFlowable(
+        width="100%",
+        thickness=0.6,
+        color=black,
+        spaceBefore=1,
+        spaceAfter=5,
+    ))
+
+
+def add_entry(story, styles, title, date, lines=None, description=None, bullets=None):
+    """One CV entry: title on the left, date on the right."""
+    title_para = Paragraph(esc(title), styles["EntryTitle"])
+    date_text = esc(date or "").replace(" ", "&nbsp;")
+    date_para = Paragraph(date_text, styles["EntryDate"])
+    table = Table(
+        [[title_para, date_para]],
+        colWidths=[CONTENT_WIDTH - DATE_WIDTH, DATE_WIDTH],
+    )
+    table.setStyle(TableStyle([
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 0),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 0),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+    ]))
+    block = [table]
+    for line in lines or []:
+        if line:
+            block.append(Paragraph(esc(line), styles["EntryOrg"]))
+    if description:
+        block.append(Paragraph(esc(description), styles["EntryDesc"]))
+    for bullet in bullets or []:
+        if bullet:
+            block.append(Paragraph(f"• {esc(bullet)}", styles["EntryDesc"]))
+    block.append(Spacer(1, 7))
+    story.append(KeepTogether(block))
+
+
+def add_education(story, styles, cv_data):
+    education = cv_data.get("education") or []
+    if not education:
+        return
+    add_section(story, styles, "Education")
+    for item in education:
+        title_parts = [part for part in (item.get("studyType"), item.get("area")) if part]
+        add_entry(
+            story,
+            styles,
+            ", ".join(title_parts),
+            format_date_range(item.get("startDate"), item.get("endDate")),
+            [item.get("institution")],
+            item.get("description"),
+        )
+
+
+def add_research(story, styles, cv_data):
+    research = cv_data.get("research_experience") or []
+    if not research:
+        return
+    add_section(story, styles, "Research Experience")
+    for item in research:
+        lines = [item.get("institution")]
+        if item.get("supervisor"):
+            lines.append(f"Supervisor: {item['supervisor']}")
+        add_entry(
+            story,
+            styles,
+            item.get("position", ""),
+            format_date_range(item.get("startDate"), item.get("endDate")),
+            lines,
+            item.get("description"),
+        )
+
+
+def add_publications(story, styles, cv_data):
+    publications = cv_data.get("publications") or {}
+    manuscripts = publications.get("manuscripts_in_prep") or []
+    peer_reviewed = publications.get("peer_reviewed") or []
+    if not manuscripts and not peer_reviewed:
+        return
+    add_section(story, styles, "Publications")
+    if manuscripts:
+        story.append(Paragraph("Manuscripts in Preparation / Under Review", styles["CVSubsection"]))
+        for item in manuscripts:
+            lines = []
+            authors = item.get("authors") or []
+            if authors:
+                lines.append(", ".join(authors))
+            if item.get("expected_submission"):
+                lines.append(f"Expected submission: {item['expected_submission']}")
+            add_entry(
+                story,
+                styles,
+                item.get("title", ""),
+                item.get("status", ""),
+                lines,
+                item.get("description"),
+            )
+    if peer_reviewed:
+        story.append(Paragraph("Peer-Reviewed Journal Articles", styles["CVSubsection"]))
+        for item in peer_reviewed:
+            lines = []
+            authors = item.get("authors") or []
+            if authors:
+                lines.append(", ".join(authors))
+            journal_bits = [item.get("journal") or ""]
+            if item.get("volume"):
+                journal_bits.append(str(item["volume"]))
+            journal = ", ".join(bit for bit in journal_bits if bit)
+            if item.get("issue"):
+                journal += f"({item['issue']})"
+            if item.get("pages"):
+                journal += f": {item['pages']}"
+            if journal:
+                lines.append(journal)
+            if item.get("doi"):
+                lines.append(f"DOI: {item['doi']}")
+            add_entry(
+                story,
+                styles,
+                item.get("title", ""),
+                str(item.get("year") or ""),
+                lines,
+                item.get("description"),
+            )
+
+
+def add_talks(story, styles, cv_data):
+    talks = cv_data.get("talks_and_presentations") or []
+    if not talks:
+        return
+    add_section(story, styles, "Talks and Presentations")
+    for item in talks:
+        event_bits = [bit for bit in (item.get("type"), item.get("event")) if bit]
+        lines = [", ".join(event_bits)] if event_bits else []
+        if item.get("location"):
+            lines.append(item["location"])
+        add_entry(
+            story,
+            styles,
+            item.get("title", ""),
+            item.get("date", ""),
+            lines,
+            item.get("description"),
+        )
+
+
+def add_honors(story, styles, cv_data):
+    honors = cv_data.get("honors_and_awards") or []
+    if not honors:
+        return
+    add_section(story, styles, "Honors and Awards")
+    for item in honors:
+        add_entry(
+            story,
+            styles,
+            item.get("title", ""),
+            item.get("date", ""),
+            [item.get("organization")],
+            item.get("description"),
+        )
+
+
+def add_professional(story, styles, cv_data):
+    jobs = [
+        job for job in (cv_data.get("professional_experience") or [])
+        if not is_placeholder(job.get("startDate"), job.get("endDate"), job.get("position"))
+    ]
+    if not jobs:
+        return
+    add_section(story, styles, "Professional Experience")
+    for job in jobs:
+        org_bits = [bit for bit in (job.get("organization"), job.get("location")) if bit]
+        add_entry(
+            story,
+            styles,
+            job.get("position", ""),
+            format_date_range(job.get("startDate"), job.get("endDate")),
+            [", ".join(org_bits)] if org_bits else [],
+            bullets=job.get("responsibilities"),
+        )
+
+
+def add_skills(story, styles, cv_data):
+    skills = cv_data.get("skills") or []
+    lines = []
+    for skill in skills:
+        items = skill.get("items") or skill.get("keywords") or []
+        label = skill.get("category") or skill.get("name")
+        if label and items:
+            lines.append(f"<b>{esc(label)}:</b> {esc(', '.join(items))}")
+        elif label:
+            lines.append(esc(label))
+    if not lines:
+        return
+    add_section(story, styles, "Skills")
+    for line in lines:
+        story.append(Paragraph(line, styles["SkillLine"]))
+
 
 def generate_pdf(cv_data, output_path):
-    """Generate PDF from CV data."""
+    """Generate a compact academic CV PDF."""
     if not REPORTLAB_AVAILABLE:
         print("Error: reportlab library is required for PDF generation.")
         print("Install with: pip install reportlab")
         return False
-    
     if not cv_data:
         print("Error: No CV data provided")
         return False
-    
-    # Create document
+
     doc = SimpleDocTemplate(
         output_path,
         pagesize=letter,
-        rightMargin=0.75*inch,
-        leftMargin=0.75*inch,
-        topMargin=0.75*inch,
-        bottomMargin=0.75*inch
+        rightMargin=0.7 * inch,
+        leftMargin=0.7 * inch,
+        topMargin=0.6 * inch,
+        bottomMargin=0.6 * inch,
+        title=cv_data.get("basics", {}).get("name", "CV"),
     )
-    
-    # Get styles
     styles = create_styles()
     story = []
-    
-    # Basic information
-    basics = cv_data.get('basics', {})
-    
-    # Name and title
-    if basics.get('name'):
-        story.append(Paragraph(basics['name'], styles['CVTitle']))
-    
-    if basics.get('label'):
-        story.append(Paragraph(basics['label'], styles['CVSubtitle']))
-    
-    # Contact information
-    contact_info = []
-    if basics.get('email'):
-        contact_info.append(f"Email: {basics['email']}")
-    if basics.get('phone'):
-        contact_info.append(f"Phone: {basics['phone']}")
-    if basics.get('website'):
-        contact_info.append(f"Website: {basics['website']}")
-    
-    location = basics.get('location', {})
-    location_parts = []
-    if location.get('city'):
-        location_parts.append(location['city'])
-    if location.get('region'):
-        location_parts.append(location['region'])
-    if location.get('countryCode'):
-        location_parts.append(location['countryCode'])
-    if location_parts:
-        contact_info.append(f"Location: {', '.join(location_parts)}")
-    
-    if contact_info:
-        story.append(Paragraph(' | '.join(contact_info), styles['CVContact']))
-    
-    story.append(Spacer(1, 12))
-    
-    # Summary
-    if basics.get('summary'):
-        story.append(Paragraph('Summary', styles['CVSectionHeader']))
-        story.append(Paragraph(basics['summary'], styles['Normal']))
-        story.append(Spacer(1, 12))
-    
-    # Education
-    education = cv_data.get('education', [])
-    if education:
-        story.append(Paragraph('Education', styles['CVSectionHeader']))
-        for edu in education:
-            title_parts = []
-            if edu.get('area'):
-                title_parts.append(edu['area'])
-            if edu.get('studyType'):
-                title_parts.append(edu['studyType'])
-            
-            if title_parts:
-                story.append(Paragraph(', '.join(title_parts), styles['CVEntryTitle']))
-            
-            if edu.get('institution'):
-                story.append(Paragraph(edu['institution'], styles['CVEntryOrg']))
-            
-            date_range = format_date_range(edu.get('startDate'), edu.get('endDate'))
-            if date_range:
-                story.append(Paragraph(date_range, styles['CVEntryDate']))
-            
-            if edu.get('gpa'):
-                story.append(Paragraph(f"GPA: {edu['gpa']}", styles['CVEntryDesc']))
-            
-            if edu.get('courses'):
-                courses_text = f"Relevant Coursework: {', '.join(edu['courses'])}"
-                story.append(Paragraph(courses_text, styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Work Experience
-    work = cv_data.get('work', [])
-    if work:
-        story.append(Paragraph('Work Experience', styles['CVSectionHeader']))
-        for job in work:
-            if job.get('position'):
-                story.append(Paragraph(job['position'], styles['CVEntryTitle']))
-            
-            org_parts = []
-            if job.get('company'):
-                org_parts.append(job['company'])
-            if job.get('location'):
-                org_parts.append(job['location'])
-            
-            if org_parts:
-                story.append(Paragraph(', '.join(org_parts), styles['CVEntryOrg']))
-            
-            date_range = format_date_range(job.get('startDate'), job.get('endDate'))
-            if date_range:
-                story.append(Paragraph(date_range, styles['CVEntryDate']))
-            
-            if job.get('summary'):
-                story.append(Paragraph(job['summary'], styles['CVEntryDesc']))
-            
-            if job.get('highlights'):
-                for highlight in job['highlights']:
-                    story.append(Paragraph(f"• {highlight}", styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Awards
-    awards = cv_data.get('awards', [])
-    if awards:
-        story.append(Paragraph('Awards & Honors', styles['CVSectionHeader']))
-        for award in awards:
-            if award.get('title'):
-                story.append(Paragraph(award['title'], styles['CVEntryTitle']))
-            
-            if award.get('awarder'):
-                story.append(Paragraph(award['awarder'], styles['CVEntryOrg']))
-            
-            if award.get('date'):
-                story.append(Paragraph(award['date'], styles['CVEntryDate']))
-            
-            if award.get('summary'):
-                story.append(Paragraph(award['summary'], styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Publications
-    publications = cv_data.get('publications', {})
-    if publications:
-        story.append(Paragraph('Publications', styles['CVSectionHeader']))
-        
-        # Manuscripts in preparation / under review
-        manuscripts = publications.get('manuscripts_in_prep', [])
-        if manuscripts:
-            story.append(Paragraph('Manuscripts in Preparation / Under Review', styles['CVSubsectionHeader']))
-            for manuscript in manuscripts:
-                if manuscript.get('title'):
-                    story.append(Paragraph(manuscript['title'], styles['CVEntryTitle']))
-                
-                authors = manuscript.get('authors', [])
-                if authors:
-                    authors_text = ', '.join(authors)
-                    story.append(Paragraph(authors_text, styles['CVEntryOrg']))
-                
-                status_info = []
-                if manuscript.get('status'):
-                    status_info.append(manuscript['status'])
-                if manuscript.get('expected_submission'):
-                    status_info.append(f"Expected submission: {manuscript['expected_submission']}")
-                
-                if status_info:
-                    story.append(Paragraph(', '.join(status_info), styles['CVEntryDate']))
-                
-                if manuscript.get('description'):
-                    story.append(Paragraph(manuscript['description'], styles['CVEntryDesc']))
-            
-            story.append(Spacer(1, 6))
-        
-        # Peer-reviewed publications
-        peer_reviewed = publications.get('peer_reviewed', [])
-        if peer_reviewed:
-            story.append(Paragraph('Peer-Reviewed Journal Articles', styles['CVSubsectionHeader']))
-            for pub in reversed(peer_reviewed):  # Most recent first
-                if pub.get('title'):
-                    story.append(Paragraph(pub['title'], styles['CVEntryTitle']))
-                
-                authors = pub.get('authors', [])
-                if authors:
-                    authors_text = ', '.join(authors)
-                    story.append(Paragraph(authors_text, styles['CVEntryOrg']))
-                
-                pub_info = []
-                if pub.get('journal'):
-                    journal_text = pub['journal']
-                    if pub.get('volume'):
-                        journal_text += f", {pub['volume']}"
-                    if pub.get('issue'):
-                        journal_text += f"({pub['issue']})"
-                    if pub.get('pages'):
-                        journal_text += f": {pub['pages']}"
-                    if pub.get('year'):
-                        journal_text += f" ({pub['year']})"
-                    pub_info.append(journal_text)
-                
-                if pub_info:
-                    story.append(Paragraph(', '.join(pub_info), styles['CVEntryDate']))
-                
-                if pub.get('description'):
-                    story.append(Paragraph(pub['description'], styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Research Experience
-    research_experience = cv_data.get('research_experience', [])
-    if research_experience:
-        story.append(Paragraph('Research Experience', styles['CVSectionHeader']))
-        for research in research_experience:
-            if research.get('position'):
-                story.append(Paragraph(research['position'], styles['CVEntryTitle']))
-            
-            if research.get('institution'):
-                story.append(Paragraph(research['institution'], styles['CVEntryOrg']))
-            
-            if research.get('supervisor'):
-                story.append(Paragraph(f"Supervisor: {research['supervisor']}", styles['CVEntryOrg']))
-            
-            date_range = format_date_range(research.get('startDate'), research.get('endDate'))
-            if date_range:
-                story.append(Paragraph(date_range, styles['CVEntryDate']))
-            
-            if research.get('description'):
-                story.append(Paragraph(research['description'], styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Talks and Presentations
-    talks_and_presentations = cv_data.get('talks_and_presentations', [])
-    if talks_and_presentations:
-        story.append(Paragraph('Talks and Presentations', styles['CVSectionHeader']))
-        for talk in talks_and_presentations:
-            if talk.get('title'):
-                story.append(Paragraph(talk['title'], styles['CVEntryTitle']))
-            
-            talk_info = []
-            if talk.get('type'):
-                talk_info.append(talk['type'])
-            if talk.get('event'):
-                talk_info.append(talk['event'])
-            
-            if talk_info:
-                story.append(Paragraph(', '.join(talk_info), styles['CVEntryOrg']))
-            
-            location_date = []
-            if talk.get('date'):
-                location_date.append(talk['date'])
-            if talk.get('location'):
-                location_date.append(talk['location'])
-            
-            if location_date:
-                story.append(Paragraph(', '.join(location_date), styles['CVEntryDate']))
-            
-            if talk.get('description'):
-                story.append(Paragraph(talk['description'], styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Honors and Awards
-    honors_and_awards = cv_data.get('honors_and_awards', [])
-    if honors_and_awards:
-        story.append(Paragraph('Honors and Awards', styles['CVSectionHeader']))
-        for award in honors_and_awards:
-            if award.get('title'):
-                story.append(Paragraph(award['title'], styles['CVEntryTitle']))
-            
-            if award.get('organization'):
-                story.append(Paragraph(award['organization'], styles['CVEntryOrg']))
-            
-            if award.get('date'):
-                story.append(Paragraph(award['date'], styles['CVEntryDate']))
-            
-            if award.get('description'):
-                story.append(Paragraph(award['description'], styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Professional Experience
-    professional_experience = cv_data.get('professional_experience', [])
-    if professional_experience:
-        story.append(Paragraph('Professional Experience', styles['CVSectionHeader']))
-        for job in professional_experience:
-            if job.get('position'):
-                story.append(Paragraph(job['position'], styles['CVEntryTitle']))
-            
-            org_parts = []
-            if job.get('organization'):
-                org_parts.append(job['organization'])
-            if job.get('location'):
-                org_parts.append(job['location'])
-            
-            if org_parts:
-                story.append(Paragraph(', '.join(org_parts), styles['CVEntryOrg']))
-            
-            date_range = format_date_range(job.get('startDate'), job.get('endDate'))
-            if date_range:
-                story.append(Paragraph(date_range, styles['CVEntryDate']))
-            
-            if job.get('responsibilities'):
-                for responsibility in job['responsibilities']:
-                    story.append(Paragraph(f"• {responsibility}", styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Skills
-    skills = cv_data.get('skills', [])
-    if skills:
-        story.append(Paragraph('Skills', styles['CVSectionHeader']))
-        for skill in skills:
-            # Handle both standard resume.json format and custom format
-            if skill.get('category') and skill.get('items'):
-                # Custom format with category and items
-                story.append(Paragraph(skill['category'], styles['CVEntryTitle']))
-                if skill['items']:
-                    items_text = ', '.join(skill['items'])
-                    story.append(Paragraph(items_text, styles['CVEntryDesc']))
-            else:
-                # Standard resume.json format
-                skill_text = skill.get('name', '')
-                if skill.get('level'):
-                    skill_text += f" ({skill['level']})"
-                if skill_text:
-                    story.append(Paragraph(skill_text, styles['CVEntryTitle']))
-                
-                if skill.get('keywords'):
-                    keywords_text = ', '.join(skill['keywords'])
-                    story.append(Paragraph(keywords_text, styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # References
-    references = cv_data.get('references', [])
-    if references:
-        story.append(Paragraph('References', styles['CVSectionHeader']))
-        for ref in references:
-            if ref.get('name'):
-                story.append(Paragraph(ref['name'], styles['CVEntryTitle']))
-            
-            ref_info = []
-            if ref.get('position'):
-                ref_info.append(ref['position'])
-            if ref.get('institution'):
-                ref_info.append(ref['institution'])
-            
-            if ref_info:
-                story.append(Paragraph(', '.join(ref_info), styles['CVEntryOrg']))
-            
-            contact_info = []
-            if ref.get('email'):
-                contact_info.append(f"Email: {ref['email']}")
-            if ref.get('phone'):
-                contact_info.append(f"Phone: {ref['phone']}")
-            
-            if contact_info:
-                story.append(Paragraph(', '.join(contact_info), styles['CVEntryDesc']))
-            
-            if ref.get('relationship'):
-                story.append(Paragraph(f"Relationship: {ref['relationship']}", styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Projects
-    projects = cv_data.get('projects', [])
-    if projects:
-        story.append(Paragraph('Projects', styles['CVSectionHeader']))
-        for project in projects:
-            if project.get('name'):
-                story.append(Paragraph(project['name'], styles['CVEntryTitle']))
-            
-            if project.get('url'):
-                story.append(Paragraph(project['url'], styles['CVEntryOrg']))
-            
-            date_range = format_date_range(project.get('startDate'), project.get('endDate'))
-            if date_range:
-                story.append(Paragraph(date_range, styles['CVEntryDate']))
-            
-            if project.get('summary'):
-                story.append(Paragraph(project['summary'], styles['CVEntryDesc']))
-            
-            if project.get('highlights'):
-                for highlight in project['highlights']:
-                    story.append(Paragraph(f"• {highlight}", styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Languages
-    languages = cv_data.get('languages', [])
-    if languages:
-        story.append(Paragraph('Languages', styles['CVSectionHeader']))
-        for lang in languages:
-            lang_text = lang.get('language', '')
-            if lang.get('fluency'):
-                lang_text += f" - {lang['fluency']}"
-            if lang_text:
-                story.append(Paragraph(lang_text, styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-        
-        story.append(Spacer(1, 12))
-    
-    # Projects
-    projects = cv_data.get('projects', [])
-    if projects:
-        story.append(Paragraph('Projects', styles['CVSectionHeader']))
-        for project in projects:
-            if project.get('name'):
-                story.append(Paragraph(project['name'], styles['CVEntryTitle']))
-            
-            date_range = format_date_range(project.get('startDate'), project.get('endDate'))
-            if date_range:
-                story.append(Paragraph(date_range, styles['CVEntryDate']))
-            
-            if project.get('description'):
-                story.append(Paragraph(project['description'], styles['CVEntryDesc']))
-            
-            if project.get('highlights'):
-                for highlight in project['highlights']:
-                    story.append(Paragraph(f"• {highlight}", styles['CVEntryDesc']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Languages
-    languages = cv_data.get('languages', [])
-    if languages:
-        story.append(Paragraph('Languages', styles['CVSectionHeader']))
-        for lang in languages:
-            lang_text = lang.get('language', '')
-            if lang.get('fluency'):
-                lang_text += f" ({lang['fluency']})"
-            if lang_text:
-                story.append(Paragraph(lang_text, styles['CVEntryTitle']))
-        
-        story.append(Spacer(1, 12))
-    
-    # Online Profiles
-    profiles = basics.get('profiles', [])
-    if profiles:
-        story.append(Paragraph('Online Profiles', styles['CVSectionHeader']))
-        for profile in profiles:
-            if profile.get('network') and profile.get('url'):
-                profile_text = f"{profile['network']}: {profile['url']}"
-                story.append(Paragraph(profile_text, styles['CVEntryDesc']))
-    
-    # Build PDF
+
+    basics = cv_data.get("basics") or {}
+    if basics.get("name"):
+        story.append(Paragraph(esc(basics["name"]), styles["CVName"]))
+
+    contact = []
+    if basics.get("email"):
+        contact.append(basics["email"])
+    if basics.get("website"):
+        contact.append(basics["website"])
+    location = basics.get("location") or {}
+    location_parts = [location.get("city"), location.get("region")]
+    location_text = ", ".join(part for part in location_parts if part)
+    if location_text:
+        contact.append(location_text)
+    if contact:
+        story.append(Paragraph(esc("  |  ".join(contact)), styles["CVContact"]))
+
+    add_education(story, styles, cv_data)
+    add_research(story, styles, cv_data)
+    add_publications(story, styles, cv_data)
+    add_talks(story, styles, cv_data)
+    add_honors(story, styles, cv_data)
+    add_professional(story, styles, cv_data)
+    add_skills(story, styles, cv_data)
+
     try:
         doc.build(story)
         return True
-    except Exception as e:
-        print(f"Error building PDF: {e}")
+    except Exception as exc:
+        print(f"Error building PDF: {exc}")
         return False
 
+
 def main():
-    """Main function to generate CV PDF."""
-    # Determine script directory
+    """Generate files/cv.pdf from _data/cv.json."""
     script_dir = Path(__file__).parent
-    
-    # Paths
-    cv_json_path = script_dir / '_data' / 'cv.json'
-    output_path = script_dir / 'files' / 'cv.pdf'
-    
-    # Ensure output directory exists
+    cv_json_path = script_dir / "_data" / "cv.json"
+    output_path = script_dir / "files" / "cv.pdf"
     output_path.parent.mkdir(exist_ok=True)
-    
+
     print("Loading CV data...")
     cv_data = load_cv_data(cv_json_path)
-    
     if not cv_data:
         return 1
-    
+
     print(f"Generating PDF: {output_path}")
-    success = generate_pdf(cv_data, str(output_path))
-    
-    if success:
-        print(f"✓ PDF generated successfully: {output_path}")
-        print(f"File size: {output_path.stat().st_size} bytes")
-        return 0
-    else:
+    if not generate_pdf(cv_data, str(output_path)):
         print("✗ Failed to generate PDF")
         return 1
 
-if __name__ == '__main__':
-    exit(main())
+    print(f"✓ PDF generated successfully: {output_path}")
+    print(f"File size: {output_path.stat().st_size} bytes")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

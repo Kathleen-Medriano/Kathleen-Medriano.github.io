@@ -26,7 +26,7 @@ author:
   avatar           : "profileBig.jpg"
   name             : "Kathleen Medriano"
   pronouns         : # example: "she/her"
-  bio              : "PhD in Cognitive Sciences, MS Statistics. Time Series Analysis, Machine Learning, and Statistical Modeling."
+  bio              : "PhD student in Cognitive Sciences, MS Statistics. Time Series Analysis, Machine Learning, and Statistical Modeling."
   location         : "Irvine, CA"
   employer         : "University of California, Irvine"
   uri              : # URL
@@ -63,7 +63,7 @@ author:
   keybase          : # Username
   instagram        : # Username
   lastfm           : # Username
-  linkedin         : # Username
+  linkedin         : "kathleen-medriano"
   mastodon         : # URL
   medium           : # URL
   pinterest        : # Username

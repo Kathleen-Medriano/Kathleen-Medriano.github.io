@@ -20,8 +20,8 @@ main:
   - title: "Recent News & Highlights"
     url: /news/
 
-  # - title: "Talks"
-  #   url: /talks/    
+  - title: "Talks"
+    url: /talks/    
 
   # - title: "Teaching"
   #   url: /teaching/    

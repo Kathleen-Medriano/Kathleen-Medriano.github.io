@@ -233,6 +233,7 @@
     <h2>Professional Experience</h2>
     <ul class="cv-list">
       {% for work in cv.professional_experience %}
+      {% unless work.startDate contains "[" or work.endDate contains "[" %}
       <li class="cv-item">
         <div class="cv-item-header">
           <div class="cv-item-title">{{ work.position }}</div>
@@ -252,6 +253,7 @@
           {% endif %}
         </div>
       </li>
+      {% endunless %}
       {% endfor %}
     </ul>
   </div>
@@ -274,29 +276,4 @@
   
 
   
-  {% if cv.references.size > 0 %}
-  <!-- References -->
-  <div class="cv-section">
-    <h2>References</h2>
-    <ul class="cv-list">
-      {% for reference in cv.references %}
-      <li class="cv-item">
-        <div class="cv-item-content">
-          <div class="cv-item-title">{{ reference.name }}</div>
-          <div class="cv-item-subtitle">{{ reference.position }}{% if reference.institution %}, {{ reference.institution }}{% endif %}</div>
-          {% if reference.email %}
-          <div class="cv-item-detail"><strong>Email:</strong> <a href="mailto:{{ reference.email }}">{{ reference.email }}</a></div>
-          {% endif %}
-          {% if reference.phone %}
-          <div class="cv-item-detail"><strong>Phone:</strong> {{ reference.phone }}</div>
-          {% endif %}
-          {% if reference.relationship %}
-          <div class="cv-item-detail"><strong>Relationship:</strong> {{ reference.relationship }}</div>
-          {% endif %}
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
 </div>
