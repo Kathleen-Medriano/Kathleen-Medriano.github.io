@@ -1,13 +1,15 @@
 ---
 title: "A Reconstruct-then-Bootstrap Test for the Sufficiency of Diffusion Processes"
 collection: publications
-category: manuscripts_in_prep
+category: peer_reviewed
 permalink: /publication/2025-reconstruct-bootstrap
 excerpt: 'A novel statistical test to assess whether a diffusion process model is sufficient for observed time series data, using Kramers-Moyal expansion and bootstrap methods.'
-date: 2025-01-01
-venue: 'Submitted'
-paperurl: 'http://psyarxiv.com/h2dqu_v1'
+date: 2026-03-19
+venue: 'Computational Brain & Behavior'
+paperurl: 'https://doi.org/10.1007/s42113-026-00268-w'
+doi: '10.1007/s42113-026-00268-w'
 authors: 'Kathleen Medriano, Joachim Vandekerckhove'
+citation: 'Medriano, K., & Vandekerckhove, J. (2026). A Reconstruct-then-Bootstrap Test for the Sufficiency of Diffusion Processes. <i>Computational Brain & Behavior</i>. https://doi.org/10.1007/s42113-026-00268-w'
 ---
 
 Diffusion processes are commonly used in the modeling of time series that exhibit stationarity and Markovianity. However, those two properties do not guarantee that a diffusive process is sufficient for the time series. In this paper, we develop a test for the sufficiency of a diffusion process for an observed time series. 

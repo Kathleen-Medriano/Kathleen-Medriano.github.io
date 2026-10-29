@@ -21,9 +21,8 @@ My work centers on understanding complex cognitive processes through statistical
 
 ## Current Research
 
-- **Diffusion process sufficiency**: A reconstruct-then-bootstrap test of whether a diffusion process is sufficient for an observed time series (submitted)
-- **Bayesian hierarchical models**: Ornstein–Uhlenbeck models for intervention design in mobile health (in preparation)
-- **Model discovery**: Data-driven discovery of parsimonious stochastic models for coupled time series, including core affect dynamics from daily life studies
+<!-- - **Diffusion process sufficiency**: A reconstruct-then-bootstrap test of whether a diffusion process is sufficient for an observed time series, published in *Computational Brain & Behavior* (2026) -->
+- **Model discovery for hierarchical datasets**: Data-driven discovery of parsimonious models for hierarchical datasets in the cognitive and behavioral sciences
 
 ## Academic Background
 

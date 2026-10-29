@@ -98,16 +98,22 @@
         "status": "In preparation",
         "expected_submission": "2025",
         "description": "Developing Bayesian hierarchical Ornstein-Uhlenbeck models for optimizing intervention timing and effectiveness in mobile health applications."
-      },
-      {
-        "title": "Statistical Tests for Diffusion Process Sufficiency in Time Series Modeling",
-        "authors": ["Kathleen Medriano", "Joachim Vandekerckhove"],
-        "status": "Under review",
-        "expected_submission": "2024",
-        "description": "Novel statistical framework for assessing whether diffusion processes adequately capture temporal dynamics in time series data."
       }
     ],
     "peer_reviewed": [
+      {
+        "title": "A Reconstruct-then-Bootstrap Test for the Sufficiency of Diffusion Processes",
+        "authors": ["Kathleen Medriano", "Joachim Vandekerckhove"],
+        "journal": "Computational Brain & Behavior",
+        "year": "2026",
+        "volume": "",
+        "issue": "",
+        "pages": "",
+        "doi": "10.1007/s42113-026-00268-w",
+        "url": "https://doi.org/10.1007/s42113-026-00268-w",
+        "citation": "Medriano, K., & Vandekerckhove, J. (2026). A Reconstruct-then-Bootstrap Test for the Sufficiency of Diffusion Processes. Computational Brain & Behavior. https://doi.org/10.1007/s42113-026-00268-w",
+        "description": "A novel statistical test to assess whether a diffusion process model is sufficient for observed time series data, using Kramers-Moyal expansion and bootstrap methods."
+      },
       {
         "title": "The HDI+ ROPE decision rule is logically incoherent but we can fix it",
         "authors": ["Alexander Etz", "Andrés F. Chávez de la Peña", "Luis Baroja", "Kathleen Medriano", "Joachim Vandekerckhove"],
@@ -137,6 +143,30 @@
     ]
   },
   "talks_and_presentations": [
+    {
+      "title": "Model discovery for hierarchical datasets",
+      "type": "Poster Presentation",
+      "event": "International Conference on Scientific Computing and Machine Learning (SCML) 2026",
+      "date": "September 2026",
+      "location": "",
+      "description": "Medriano, K., & Vandekerckhove, J. (2026, September). Model discovery for hierarchical datasets. Poster at SCML 2026."
+    },
+    {
+      "title": "Model discovery for hierarchical datasets",
+      "type": "Conference Talk",
+      "event": "MathPsych / ICCM 2026",
+      "date": "July 2026",
+      "location": "",
+      "description": "Medriano, K., & Vandekerckhove, J. (2026, July). Model discovery for hierarchical datasets. Talk at MathPsych / ICCM 2026. https://mathpsych.org/presentation/2140"
+    },
+    {
+      "title": "Reconstruct-then-Bootstrap test for the sufficiency of diffusion process",
+      "type": "Poster Presentation",
+      "event": "International Society for Bayesian Analysis 2026",
+      "date": "June 2026",
+      "location": "",
+      "description": "Medriano, K., & Vandekerckhove, J. (2026, June). Reconstruct-then-Bootstrap test for the sufficiency of diffusion process. Poster at the International Society for Bayesian Analysis 2026."
+    },
     {
       "title": "Data-driven model discovery for coupled time series",
       "type": "Conference Talk",
